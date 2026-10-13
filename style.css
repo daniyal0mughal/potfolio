@@ -83,10 +83,6 @@ html {
 body {
     font-family: var(--font-body);
     background-color: var(--bg-primary);
-    background-image: 
-        radial-gradient(ellipse at 85% 10%, rgba(225, 29, 72, 0.11) 0%, transparent 45%),
-        radial-gradient(ellipse at 15% 55%, rgba(190, 18, 60, 0.09) 0%, transparent 50%),
-        radial-gradient(ellipse at 60% 88%, rgba(244, 63, 94, 0.08) 0%, transparent 45%);
     background-attachment: fixed;
     color: var(--text-secondary);
     line-height: 1.65;
@@ -118,246 +114,11 @@ body {
     color: #FFFFFF;
 }
 
-/* ==========================================================================
-   0. PRELOADER SCREEN
-   ========================================================================== */
-body.is-loading {
-    overflow: hidden !important;
-}
-
-.preloader {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: #0E090C;
-    background-image: 
-        radial-gradient(circle at 50% 40%, rgba(225, 29, 72, 0.20) 0%, transparent 60%),
-        radial-gradient(circle at 80% 80%, rgba(190, 18, 60, 0.12) 0%, transparent 50%);
-    z-index: 99999;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: opacity 0.65s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.65s ease, transform 0.65s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.preloader.preloader-hidden {
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(1.04);
-    pointer-events: none;
-}
-
-.preloader-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    max-width: 440px;
-    width: 90%;
-    position: relative;
-    z-index: 2;
-}
-
-/* Animated Logo Glyph */
-.preloader-logo-wrap {
-    position: relative;
-    width: 72px;
-    height: 72px;
-    margin-bottom: 1.6rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.preloader-logo {
-    width: 100%;
-    height: 100%;
-    animation: preloaderFloat 3s ease-in-out infinite;
-}
-
-.preloader-rect {
-    stroke-dasharray: 240;
-    stroke-dashoffset: 240;
-    animation: preloaderRectDraw 2s ease-in-out infinite alternate;
-}
-
-.preloader-check {
-    stroke-dasharray: 60;
-    stroke-dashoffset: 60;
-    animation: preloaderCheckDraw 1.6s ease-in-out infinite alternate 0.4s;
-}
-
-.preloader-pulse-ring {
-    position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    border-radius: 20px;
-    border: 1px solid rgba(251, 113, 133, 0.4);
-    animation: preloaderPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
-    pointer-events: none;
-}
-
-@keyframes preloaderRectDraw {
-    0% { stroke-dashoffset: 240; }
-    100% { stroke-dashoffset: 0; }
-}
-
-@keyframes preloaderCheckDraw {
-    0% { stroke-dashoffset: 60; }
-    100% { stroke-dashoffset: 0; }
-}
-
-@keyframes preloaderFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
-}
-
-@keyframes preloaderPulse {
-    0% { transform: scale(0.92); opacity: 0.8; }
-    100% { transform: scale(1.35); opacity: 0; }
-}
-
-/* Preloader Typography */
-.preloader-brand {
-    display: flex;
-    flex-direction: column;
-    gap: 0.35rem;
-    margin-bottom: 1.8rem;
-}
-
-.preloader-name {
-    font-family: var(--font-heading);
-    font-size: 1.2rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    color: var(--text-primary);
-}
-
-.preloader-subtitle {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    color: var(--strawberry-soft);
-}
-
-/* Progress Bar */
-.preloader-progress-box {
-    width: 100%;
-    margin-bottom: 1.2rem;
-}
-
-.preloader-bar-track {
-    width: 100%;
-    height: 4px;
-    background: #1F111A;
-    border: 1px solid var(--border);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
-}
-
-.preloader-bar-fill {
-    width: 0%;
-    height: 100%;
-    background: var(--strawberry-gradient);
-    border-radius: 3px;
-    box-shadow: 0 0 12px rgba(225, 29, 72, 0.8);
-    transition: width 0.1s linear;
-}
-
-.preloader-meta-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-}
-
-.preloader-status-text {
-    color: var(--text-muted);
-    letter-spacing: 0.06em;
-    font-weight: 600;
-}
-
-.preloader-percent {
-    color: var(--strawberry-soft);
-    font-weight: 700;
-}
-
-/* Terminal Log */
-.preloader-terminal {
-    background: #140C11;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.45rem 0.85rem;
-    width: 100%;
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--text-dim);
-    text-align: left;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
 /* --------------------------------------------------------------------------
    SUBTLE ARCHITECTURAL GRID & AMBIENT STRAWBERRY AURAS
    -------------------------------------------------------------------------- */
-.subtle-grid {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-image: 
-        linear-gradient(to right, rgba(251, 113, 133, 0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(251, 113, 133, 0.02) 1px, transparent 1px);
-    background-size: 56px 56px;
-    pointer-events: none;
-    z-index: 0;
-}
+.subtle-grid { display: none; }
 
-/* Luminous Strawberry Background Glows */
-.ambient-strawberry-glow {
-    position: fixed;
-    border-radius: 50%;
-    filter: blur(130px);
-    pointer-events: none;
-    z-index: 0;
-}
-
-.glow-strawberry-1 {
-    width: 520px;
-    height: 520px;
-    background: radial-gradient(circle, rgba(225, 29, 72, 0.22) 0%, rgba(244, 63, 94, 0.08) 45%, transparent 75%);
-    top: -100px;
-    right: 3%;
-    opacity: 0.85;
-}
-
-.glow-strawberry-2 {
-    width: 560px;
-    height: 560px;
-    background: radial-gradient(circle, rgba(190, 18, 60, 0.18) 0%, rgba(225, 29, 72, 0.06) 50%, transparent 75%);
-    top: 40%;
-    left: -120px;
-    opacity: 0.75;
-}
-
-.glow-strawberry-3 {
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(244, 63, 94, 0.15) 0%, rgba(225, 29, 72, 0.04) 50%, transparent 70%);
-    bottom: -150px;
-    right: 20%;
-    opacity: 0.8;
-}
 
 /* --------------------------------------------------------------------------
    CARD SURFACE BASE CLASS
@@ -473,13 +234,8 @@ h1, h2, h3, h4, h5, h6 {
     border-radius: 50%;
     background-color: var(--success);
     box-shadow: 0 0 8px rgba(57, 185, 138, 0.8);
-    animation: statusPulse 2s infinite ease-in-out;
 }
 
-@keyframes statusPulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
-}
 
 .status-pill-text {
     font-family: var(--font-mono);
@@ -724,14 +480,9 @@ h1, h2, h3, h4, h5, h6 {
     height: 14px;
     border-radius: 50%;
     border: 1px solid var(--success);
-    animation: radarPulse 1.8s infinite ease-out;
     opacity: 0.6;
 }
 
-@keyframes radarPulse {
-    0% { transform: scale(0.5); opacity: 0.9; }
-    100% { transform: scale(1.8); opacity: 0; }
-}
 
 .radar-status-title {
     font-family: var(--font-mono);
@@ -1319,13 +1070,8 @@ h1, h2, h3, h4, h5, h6 {
 .terminal-cursor {
     display: inline-block;
     color: var(--strawberry-bright);
-    animation: blink 1s infinite;
 }
 
-@keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-}
 
 /* Floating Meta Badges */
 .floating-meta-card {
@@ -2379,7 +2125,6 @@ h1, h2, h3, h4, h5, h6 {
     height: 13px;
     background: var(--strawberry-bright);
     vertical-align: middle;
-    animation: blink 1s infinite;
 }
 
 .dev-github-cta {
@@ -2636,14 +2381,13 @@ h1, h2, h3, h4, h5, h6 {
    SCROLL REVEAL ANIMATIONS
    ========================================================================== */
 .reveal-element {
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1), transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 1;
+    transform: none;
 }
 
 .reveal-element.is-visible {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
 }
 
 .delay-1 { transition-delay: 0.12s; }
