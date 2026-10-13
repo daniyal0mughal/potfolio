@@ -30,6 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (preloader) {
         let progress = 0;
+        let isDismissed = false;
         const telemetryLogs = [
             { threshold: 15, status: 'INITIALIZING MODULES...', log: '> Connecting runtime environment...' },
             { threshold: 40, status: 'LOADING ASSETS...', log: '> Bundling TypeScript & Flutter packages...' },
@@ -39,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
 
         const updateProgress = (targetValue) => {
-            progress = targetValue;
+            progress = Math.min(Math.max(targetValue, progress), 100);
             if (preloaderFill) preloaderFill.style.width = `${progress}%`;
             if (preloaderPercent) preloaderPercent.textContent = `${Math.round(progress)}%`;
 
@@ -50,14 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        const progressInterval = setInterval(() => {
-            if (progress < 90) {
-                const increment = Math.random() * 14 + 6;
-                updateProgress(Math.min(progress + increment, 90));
-            }
-        }, 80);
-
         const dismissPreloader = () => {
+            if (isDismissed) return;
+            isDismissed = true;
             clearInterval(progressInterval);
             updateProgress(100);
 
@@ -66,22 +62,29 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.body.classList.remove('is-loading');
 
                 setTimeout(() => {
-                    if (preloader.parentNode) {
+                    if (preloader && preloader.parentNode) {
                         preloader.parentNode.removeChild(preloader);
                     }
-                }, 700);
-            }, 300);
+                }, 550);
+            }, 250);
         };
 
-        // Complete loading on window load or after safety threshold
+        const progressInterval = setInterval(() => {
+            if (progress < 92) {
+                const step = Math.random() * 18 + 12;
+                updateProgress(progress + step);
+            } else {
+                dismissPreloader();
+            }
+        }, 50);
+
         if (document.readyState === 'complete') {
-            setTimeout(dismissPreloader, 700);
+            setTimeout(dismissPreloader, 600);
         } else {
             window.addEventListener('load', () => {
-                setTimeout(dismissPreloader, 500);
+                setTimeout(dismissPreloader, 400);
             });
-            // Fallback maximum timeout
-            setTimeout(dismissPreloader, 2000);
+            setTimeout(dismissPreloader, 1000);
         }
     }
 
