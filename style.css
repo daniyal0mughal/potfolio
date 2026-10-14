@@ -2827,3 +2827,25 @@ h1, h2, h3, h4, h5, h6 {
         grid-template-columns: 1fr;
     }
 }
+
+/* ==========================================================================
+   FRAMECOUNT NEW RELEASE HIGHLIGHT ANIMATIONS
+   ========================================================================== */
+@keyframes spinRing {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseScale {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+.framecount-highlight-card {
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.framecount-highlight-card:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 15px 35px -5px rgba(16, 185, 129, 0.4) !important;
+}
