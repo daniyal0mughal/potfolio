@@ -89,51 +89,66 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --------------------------------------------------------------------------
-    // 1. MOBILE SIDEBAR DRAWER TOGGLE
+    // 1. TOP FLOATING NAVBAR & MOBILE DROPDOWN DRAWER
     // --------------------------------------------------------------------------
+    const topNavbar = document.getElementById('topNavbar');
     const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    const navOverlay = document.getElementById('navOverlay');
+    const mobileDropdownDrawer = document.getElementById('mobileDropdownDrawer');
     const navLinks = document.querySelectorAll('.nav-link');
+    const mobileDrawerLinks = document.querySelectorAll('.mobile-drawer-link');
+
+    function updateNavbarScrollState() {
+        if (!topNavbar) return;
+        if (window.scrollY > 36) {
+            topNavbar.classList.add('is-scrolled');
+        } else {
+            topNavbar.classList.remove('is-scrolled');
+        }
+    }
+    window.addEventListener('scroll', updateNavbarScrollState, { passive: true });
+    updateNavbarScrollState();
 
     function toggleMobileDrawer(openState) {
-        const isOpen = openState !== undefined ? openState : !sidebar.classList.contains('is-drawer-open');
-        
+        if (!mobileDropdownDrawer || !hamburgerBtn) return;
+        const isOpen = openState !== undefined
+            ? openState
+            : !mobileDropdownDrawer.classList.contains('is-open');
+
         if (isOpen) {
-            sidebar.classList.add('is-drawer-open');
-            navOverlay.classList.add('is-active');
+            mobileDropdownDrawer.classList.add('is-open');
             hamburgerBtn.classList.add('is-active');
             hamburgerBtn.setAttribute('aria-expanded', 'true');
-            document.body.style.overflow = 'hidden'; // Prevent body scroll when drawer is open
         } else {
-            sidebar.classList.remove('is-drawer-open');
-            navOverlay.classList.remove('is-active');
+            mobileDropdownDrawer.classList.remove('is-open');
             hamburgerBtn.classList.remove('is-active');
             hamburgerBtn.setAttribute('aria-expanded', 'false');
-            document.body.style.overflow = '';
         }
     }
 
     if (hamburgerBtn) {
-        hamburgerBtn.addEventListener('click', () => toggleMobileDrawer());
-    }
-
-    if (navOverlay) {
-        navOverlay.addEventListener('click', () => toggleMobileDrawer(false));
-    }
-
-    // Close mobile drawer when clicking any nav link
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            if (window.innerWidth <= 768) {
-                toggleMobileDrawer(false);
-            }
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            toggleMobileDrawer();
         });
+    }
+
+    mobileDrawerLinks.forEach(link => {
+        link.addEventListener('click', () => toggleMobileDrawer(false));
     });
 
-    // Close on Escape key press
+    document.addEventListener('click', (e) => {
+        if (
+            mobileDropdownDrawer &&
+            mobileDropdownDrawer.classList.contains('is-open') &&
+            topNavbar &&
+            !topNavbar.contains(e.target)
+        ) {
+            toggleMobileDrawer(false);
+        }
+    });
+
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && sidebar.classList.contains('is-drawer-open')) {
+        if (e.key === 'Escape' && mobileDropdownDrawer && mobileDropdownDrawer.classList.contains('is-open')) {
             toggleMobileDrawer(false);
         }
     });
@@ -288,70 +303,177 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --------------------------------------------------------------------------
-    // 7. HERO 3D CARD TILT & PARALLAX EFFECT
+    // 6B. CYBER ENGINEERING LIVE VIDEO DECK (PROJECTS SHOWREEL)
     // --------------------------------------------------------------------------
-    const terminalTilt = document.getElementById('terminalTilt');
-    const heroVisual = document.getElementById('heroInteractiveVisual');
+    const cyberDeckVideo = document.getElementById('cyberDeckVideo');
+    const cyberDeckSource = document.getElementById('cyberDeckSource');
+    const cyberDeckTitleText = document.getElementById('cyberDeckTitleText');
+    const streamSwitchBtns = document.querySelectorAll('.stream-switch-btn');
 
-    if (heroVisual && terminalTilt && window.innerWidth > 768) {
-        heroVisual.addEventListener('mousemove', (e) => {
-            const rect = heroVisual.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
+    if (cyberDeckVideo) {
+        cyberDeckVideo.muted = true;
+        cyberDeckVideo.play().catch(() => {});
 
-            const rotateX = (-y / rect.height) * 16;
-            const rotateY = (x / rect.width) * 16;
+        streamSwitchBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetSrc = btn.getAttribute('data-video-src');
+                const targetTitle = btn.getAttribute('data-video-title');
 
-            terminalTilt.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
-        });
+                if (!targetSrc) return;
 
-        heroVisual.addEventListener('mouseleave', () => {
-            terminalTilt.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+                streamSwitchBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                // Smooth fade transition
+                cyberDeckVideo.style.opacity = '0.3';
+                setTimeout(() => {
+                    if (cyberDeckSource) {
+                        cyberDeckSource.src = targetSrc;
+                    }
+                    cyberDeckVideo.src = targetSrc;
+                    cyberDeckVideo.load();
+                    cyberDeckVideo.play().catch(() => {});
+                    cyberDeckVideo.style.opacity = '1';
+
+                    if (cyberDeckTitleText && targetTitle) {
+                        cyberDeckTitleText.textContent = targetTitle;
+                    }
+                }, 180);
+            });
         });
     }
 
     // --------------------------------------------------------------------------
-    // 8. HERO TERMINAL TYPING ROTATION
+    // 7. CLEAN FULL-SCREEN VIDEO HERO ENGINE WITH SCROLL ANIMATION
     // --------------------------------------------------------------------------
-    const typingEl = document.getElementById('typingHeroCode');
-    if (typingEl) {
-        const phrases = [
-            'Ready to engineer solutions',
-            'Building scalable systems',
-            'Cross-platform mobile apps',
-            'Full-stack architecture'
-        ];
-        let phraseIdx = 0;
-        let charIdx = 0;
-        let isDeleting = false;
+    const heroScrollTrack = document.getElementById('heroScrollTrack');
+    const heroHeaderBlock = document.getElementById('heroHeaderBlock');
+    const heroVideoStage = document.getElementById('heroVideoStage');
+    const heroVideoOverlay = document.getElementById('heroVideoOverlay');
+    const heroScrollCue = document.getElementById('heroScrollCue');
+    const heroVideoEl = document.getElementById('heroShowcaseVideo');
+    const ambientCanvas = document.getElementById('heroAmbientParticles');
 
-        function typeLoop() {
-            const currentPhrase = phrases[phraseIdx];
+    let heroScrollProgress = 0;
+    let targetScrollProgress = 0;
+    let mouseTiltX = 0;
+    let mouseTiltY = 0;
 
-            if (isDeleting) {
-                typingEl.textContent = currentPhrase.substring(0, charIdx - 1);
-                charIdx--;
-            } else {
-                typingEl.textContent = currentPhrase.substring(0, charIdx + 1);
-                charIdx++;
-            }
+    if (heroVideoStage && window.innerWidth > 768) {
+        heroVideoStage.addEventListener('mousemove', (e) => {
+            const rect = heroVideoStage.getBoundingClientRect();
+            const nx = (e.clientX - rect.left) / rect.width - 0.5;
+            const ny = (e.clientY - rect.top) / rect.height - 0.5;
+            mouseTiltY = nx * 5;
+            mouseTiltX = -ny * 4;
+        });
 
-            let typeSpeed = isDeleting ? 40 : 80;
+        heroVideoStage.addEventListener('mouseleave', () => {
+            mouseTiltX = 0;
+            mouseTiltY = 0;
+        });
+    }
 
-            if (!isDeleting && charIdx === currentPhrase.length) {
-                typeSpeed = 2200; // Pause at end of phrase
-                isDeleting = true;
-            } else if (isDeleting && charIdx === 0) {
-                isDeleting = false;
-                phraseIdx = (phraseIdx + 1) % phrases.length;
-                typeSpeed = 400;
-            }
+    function computeHeroScroll() {
+        if (!heroScrollTrack) return;
+        const rect = heroScrollTrack.getBoundingClientRect();
+        const scrollableDistance = Math.max(rect.height - window.innerHeight, 1);
+        const scrolled = -rect.top;
+        targetScrollProgress = Math.min(Math.max(scrolled / scrollableDistance, 0), 1);
+    }
 
-            setTimeout(typeLoop, typeSpeed);
+    window.addEventListener('scroll', computeHeroScroll, { passive: true });
+    window.addEventListener('resize', computeHeroScroll, { passive: true });
+    computeHeroScroll();
+
+    // Ensure clean video playback
+    if (heroVideoEl) {
+        heroVideoEl.muted = true;
+        heroVideoEl.play().catch(() => {});
+    }
+
+    // Ambient Background Particles
+    let ambCtx = null;
+    let ambParticles = [];
+    if (ambientCanvas) {
+        ambCtx = ambientCanvas.getContext('2d');
+        const resizeAmbient = () => {
+            ambientCanvas.width = ambientCanvas.offsetWidth || window.innerWidth;
+            ambientCanvas.height = ambientCanvas.offsetHeight || window.innerHeight;
+        };
+        resizeAmbient();
+        window.addEventListener('resize', resizeAmbient, { passive: true });
+
+        for (let i = 0; i < 35; i++) {
+            ambParticles.push({
+                x: Math.random() * window.innerWidth,
+                y: Math.random() * window.innerHeight,
+                r: Math.random() * 1.6 + 0.6,
+                vx: (Math.random() - 0.5) * 0.3,
+                vy: (Math.random() - 0.5) * 0.3,
+                alpha: Math.random() * 0.35 + 0.1
+            });
+        }
+    }
+
+    function renderHeroFrame() {
+        // Smoothly interpolate scroll progress
+        heroScrollProgress += (targetScrollProgress - heroScrollProgress) * 0.14;
+        const p = heroScrollProgress;
+
+        if (heroVideoStage) {
+            // Full-bleed clean video smoothly zooms in with subtle 3D parallax on scroll
+            const scale = 1.0 + p * 0.16;
+            const transY = -p * 30;
+            const rotX = mouseTiltX * 0.3;
+            const rotY = mouseTiltY * 0.3;
+            heroVideoStage.style.transform = `scale(${scale.toFixed(3)}) translateY(${transY.toFixed(1)}px) rotateX(${rotX.toFixed(2)}deg) rotateY(${rotY.toFixed(2)}deg)`;
         }
 
-        setTimeout(typeLoop, 1000);
+        if (heroVideoOverlay) {
+            // Very light overlay when idle for maximum video clarity; smoothly darkens on scroll towards Industrial Experience
+            const overlayDim = 0.25 + p * 0.75;
+            heroVideoOverlay.style.opacity = Math.min(overlayDim, 1).toFixed(2);
+        }
+
+        if (heroHeaderBlock) {
+            // Central text moves up with parallax and softly dissolves
+            const headerY = -p * 80;
+            const headerOpacity = Math.max(1 - p * 1.5, 0);
+            heroHeaderBlock.style.transform = `translateY(${headerY.toFixed(1)}px)`;
+            heroHeaderBlock.style.opacity = headerOpacity.toFixed(2);
+        }
+
+        if (heroScrollCue) {
+            // Scroll cue fades out immediately upon scroll
+            const cueOpacity = Math.max(1 - p * 3, 0);
+            heroScrollCue.style.opacity = cueOpacity.toFixed(2);
+            heroScrollCue.style.transform = `translateY(${(-p * 20).toFixed(1)}px)`;
+        }
+
+        // Render Ambient Particles
+        if (ambCtx && ambientCanvas) {
+            ambCtx.clearRect(0, 0, ambientCanvas.width, ambientCanvas.height);
+            for (let i = 0; i < ambParticles.length; i++) {
+                const pt = ambParticles[i];
+                pt.x += pt.vx;
+                pt.y += pt.vy;
+                if (pt.x < 0) pt.x = ambientCanvas.width;
+                if (pt.x > ambientCanvas.width) pt.x = 0;
+                if (pt.y < 0) pt.y = ambientCanvas.height;
+                if (pt.y > ambientCanvas.height) pt.y = 0;
+
+                ambCtx.beginPath();
+                ambCtx.arc(pt.x, pt.y, pt.r, 0, Math.PI * 2);
+                ambCtx.fillStyle = (i % 2 === 0) ? `rgba(0, 240, 255, ${pt.alpha})` : `rgba(255, 42, 109, ${pt.alpha})`;
+                ambCtx.fill();
+            }
+        }
+
+        requestAnimationFrame(renderHeroFrame);
     }
+
+    requestAnimationFrame(renderHeroFrame);
 
     // --------------------------------------------------------------------------
     // 9. BACK TO TOP BUTTON

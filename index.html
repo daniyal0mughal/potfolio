@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css?v=3.2">
+    <link rel="stylesheet" href="style.css?v=6.1">
 </head>
 <body class="dark-theme is-loading">
 
@@ -26,13 +26,13 @@
             <!-- Animated Logo Glyph -->
             <div class="preloader-logo-wrap">
                 <svg class="preloader-logo" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect class="preloader-rect" x="4" y="4" width="56" height="56" rx="14" stroke="url(#preloader-strawberry-grad)" stroke-width="2.5" fill="#140C11" />
-                    <path class="preloader-check" d="M20 32L28 40L44 24" stroke="#FB7185" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+                    <rect class="preloader-rect" x="4" y="4" width="56" height="56" rx="14" stroke="url(#preloader-strawberry-grad)" stroke-width="2.5" fill="#0B0F19" />
+                    <path class="preloader-check" d="M20 32L28 40L44 24" stroke="#00F0FF" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
                     <defs>
                         <linearGradient id="preloader-strawberry-grad" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="#FDA4AF" />
-                            <stop offset="0.5" stop-color="#FB7185" />
-                            <stop offset="1" stop-color="#E11D48" />
+                            <stop stop-color="#00F0FF" />
+                            <stop offset="0.5" stop-color="#38BDF8" />
+                            <stop offset="1" stop-color="#FF2A6D" />
                         </linearGradient>
                     </defs>
                 </svg>
@@ -69,362 +69,150 @@
 
     
 
-    <!-- Mobile Top Navigation Header -->
-    <header class="mobile-header" id="mobileHeader">
-        <div class="mobile-header-container">
-            <a href="#home" class="mobile-brand" aria-label="Daniyal Home">
-                <span class="brand-glyph-wrap">
-                    <svg class="brand-glyph" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="2" y="2" width="24" height="24" rx="6" stroke="url(#strawberry-grad-mobile)" stroke-width="1.8" fill="rgba(225, 29, 72, 0.12)" />
-                        <path d="M9 14L13 18L19 10" stroke="#FB7185" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- ==============================================
+         1. FLOATING TOP GLASS PILL NAVBAR (NO SIDEBAR)
+         ============================================== -->
+    <header class="top-navbar" id="topNavbar">
+        <div class="top-navbar-inner">
+            <!-- Brand Identity -->
+            <a href="#home" class="top-brand" aria-label="Daniyal Ahmad Mughal Home">
+                <div class="brand-logo-container">
+                    <svg class="brand-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="28" height="28" rx="8" stroke="url(#strawberry-top-grad)" stroke-width="2" fill="#191016" />
+                        <path d="M10 16L14 20L22 12" stroke="#FDA4AF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />
                         <defs>
-                            <linearGradient id="strawberry-grad-mobile" x1="0" y1="0" x2="28" y2="28" gradientUnits="userSpaceOnUse">
+                            <linearGradient id="strawberry-top-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
                                 <stop stop-color="#FB7185" />
                                 <stop offset="1" stop-color="#E11D48" />
                             </linearGradient>
                         </defs>
                     </svg>
-                </span>
-                <span class="mobile-brand-name">DANIYAL</span>
+                </div>
+                <div class="top-brand-text">
+                    <span class="top-brand-name">DANIYAL</span>
+                    <span class="top-brand-status"><span class="pulse-dot"></span> AVAILABLE</span>
+                </div>
             </a>
 
-            <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="sidebar">
-                <span class="bar bar-1"></span>
-                <span class="bar bar-2"></span>
-                <span class="bar bar-3"></span>
-            </button>
+            <!-- Center Horizontal Navigation Pills -->
+            <nav class="top-nav-menu" id="topNavMenu" aria-label="Primary Navigation">
+                <ul class="top-nav-list">
+                    <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
+                    <li><a href="#experience" class="nav-link" data-section="experience">Experience</a></li>
+                    <li><a href="#about" class="nav-link" data-section="about">About</a></li>
+                    <li><a href="#skills" class="nav-link" data-section="skills">Skills</a></li>
+                    <li><a href="#projects" class="nav-link" data-section="projects">Projects</a></li>
+                    <li><a href="#education" class="nav-link" data-section="education">Education</a></li>
+                    <li><a href="#services" class="nav-link" data-section="services">Services</a></li>
+                    <li><a href="#contact" class="nav-link" data-section="contact">Contact</a></li>
+                </ul>
+            </nav>
+
+            <!-- Right Actions & Mobile Trigger -->
+            <div class="top-nav-actions">
+                <a href="https://github.com/daniyal0mughal" target="_blank" rel="noopener noreferrer" class="top-icon-btn" aria-label="GitHub Profile" title="GitHub">
+                    <svg viewBox="0 0 24 24" width="17" height="17" fill="currentColor">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
+                    </svg>
+                </a>
+                <a href="#contact" class="top-cta-btn">
+                    <span>LET'S TALK</span>
+                    <svg viewBox="0 0 20 20" width="13" height="13" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                    </svg>
+                </a>
+                <button class="hamburger-btn" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+                    <span class="bar bar-1"></span>
+                    <span class="bar bar-2"></span>
+                    <span class="bar bar-3"></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Dropdown Navigation Drawer -->
+        <div class="mobile-dropdown-drawer" id="mobileDropdownDrawer">
+            <ul class="mobile-nav-list">
+                <li><a href="#home" class="nav-link active" data-section="home"><span class="m-num">01</span> Home</a></li>
+                <li><a href="#experience" class="nav-link" data-section="experience"><span class="m-num">02</span> Experience</a></li>
+                <li><a href="#about" class="nav-link" data-section="about"><span class="m-num">03</span> About</a></li>
+                <li><a href="#skills" class="nav-link" data-section="skills"><span class="m-num">04</span> Skills</a></li>
+                <li><a href="#projects" class="nav-link" data-section="projects"><span class="m-num">05</span> Projects</a></li>
+                <li><a href="#education" class="nav-link" data-section="education"><span class="m-num">06</span> Education</a></li>
+                <li><a href="#services" class="nav-link" data-section="services"><span class="m-num">07</span> Services</a></li>
+                <li><a href="#contact" class="nav-link" data-section="contact"><span class="m-num">08</span> Contact</a></li>
+            </ul>
         </div>
     </header>
 
     <!-- Mobile Navigation Backdrop Overlay -->
     <div class="nav-overlay" id="navOverlay" aria-hidden="true"></div>
 
-    <!-- Main Container -->
+    <!-- Main Full-Width Container -->
     <div class="layout-wrapper">
-
-        <!-- ==============================================
-             2. FIXED LEFT SIDEBAR (Desktop / Mobile Drawer)
-             ============================================== -->
-        <aside class="sidebar" id="sidebar" aria-label="Primary Navigation">
-            <div class="sidebar-inner">
-                
-                <!-- Sidebar Header / Developer Identity -->
-                <div class="sidebar-header">
-                    <!-- Live Open to Work Chip -->
-                    <div class="sidebar-status-pill">
-                        <span class="pulse-dot"></span>
-                        <span class="status-pill-text">OPEN FOR WORK</span>
-                    </div>
-
-                    <div class="brand-badge">
-                        <div class="brand-logo-container">
-                            <svg class="brand-logo" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <rect x="2" y="2" width="28" height="28" rx="7" stroke="url(#strawberry-side-grad)" stroke-width="1.8" fill="#191016" />
-                                <path d="M10 16L14 20L22 12" stroke="#FDA4AF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-                                <defs>
-                                    <linearGradient id="strawberry-side-grad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                                        <stop stop-color="#FB7185" />
-                                        <stop offset="1" stop-color="#E11D48" />
-                                    </linearGradient>
-                                </defs>
-                            </svg>
-                        </div>
-                        <div class="brand-info">
-                            <h1 class="brand-name">
-                                <span>DANIYAL</span>
-                                <span>AHMAD MUGHAL</span>
-                            </h1>
-                            <span class="brand-role-chip">FULL-STACK &amp; MOBILE</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Navigation Links -->
-                <nav class="sidebar-nav">
-                    <ul class="nav-list">
-                        <li class="nav-item">
-                            <a href="#home" class="nav-link active" data-section="home">
-                                <span class="nav-icon-box">
-                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                    </svg>
-                                </span>
-                                <span class="nav-label">HOME</span>
-                                <span class="nav-num-badge">01</span>
-                                <span class="nav-active-glow"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#experience" class="nav-link" data-section="experience">
-                                <span class="nav-icon-box">
-                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
-                                        <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-label">EXPERIENCE</span>
-                                <span class="nav-num-badge">02</span>
-                                <span class="nav-active-glow"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#about" class="nav-link" data-section="about">
-                                <span class="nav-icon-box">
-                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="12" cy="7" r="4"></circle>
-                                    </svg>
-                                </span>
-                                <span class="nav-label">ABOUT</span>
-                                <span class="nav-num-badge">03</span>
-                                <span class="nav-active-glow"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#skills" class="nav-link" data-section="skills">
-                                <span class="nav-icon-box">
-                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <polyline points="16 18 22 12 16 6"></polyline>
-                                        <polyline points="8 6 2 12 8 18"></polyline>
-                                        <line x1="14" y1="4" x2="10" y2="20"></line>
-                                    </svg>
-                                </span>
-                                <span class="nav-label">SKILLS</span>
-                                <span class="nav-num-badge">04</span>
-                                <span class="nav-active-glow"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#projects" class="nav-link" data-section="projects">
-                                <span class="nav-icon-box">
-                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                                        <line x1="8" y1="21" x2="16" y2="21"></line>
-                                        <line x1="12" y1="17" x2="12" y2="21"></line>
-                                    </svg>
-                                </span>
-                                <span class="nav-label">PROJECTS</span>
-                                <span class="nav-num-badge">05</span>
-                                <span class="nav-active-glow"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#education" class="nav-link" data-section="education">
-                                <span class="nav-icon-box">
-                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
-                                    </svg>
-                                </span>
-                                <span class="nav-label">EDUCATION</span>
-                                <span class="nav-num-badge">06</span>
-                                <span class="nav-active-glow"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#services" class="nav-link" data-section="services">
-                                <span class="nav-icon-box">
-                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                                        <polyline points="2 17 12 22 22 17"></polyline>
-                                        <polyline points="2 12 12 17 22 12"></polyline>
-                                    </svg>
-                                </span>
-                                <span class="nav-label">SERVICES</span>
-                                <span class="nav-num-badge">07</span>
-                                <span class="nav-active-glow"></span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#contact" class="nav-link" data-section="contact">
-                                <span class="nav-icon-box">
-                                    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                        <polyline points="22,6 12,13 2,6"></polyline>
-                                    </svg>
-                                </span>
-                                <span class="nav-label">CONTACT</span>
-                                <span class="nav-num-badge">08</span>
-                                <span class="nav-active-glow"></span>
-                            </a>
-                        </li>
-                    </ul>
-                </nav>
-
-                <!-- Sidebar Direct Connect Shortcuts -->
-                <div class="sidebar-shortcuts">
-                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="sidebar-shortcut-btn" aria-label="GitHub Profile">
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
-                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"></path>
-                        </svg>
-                    </a>
-                    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="sidebar-shortcut-btn" aria-label="LinkedIn Profile">
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor">
-                            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 0 0 1.64-1.64c0-.9-.74-1.64-1.64-1.64a1.64 1.64 0 0 0-1.64 1.64c0 .9.74 1.64 1.64 1.64m1.39 9.74v-8.37H5.07v8.37h2.78z"/>
-                        </svg>
-                    </a>
-                    <a href="mailto:daniyal.ahmad.mughal@example.com" class="sidebar-shortcut-btn" aria-label="Send Direct Email">
-                        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                            <polyline points="22,6 12,13 2,6"></polyline>
-                        </svg>
-                    </a>
-                </div>
-
-                <!-- Sidebar Footer Status & Quick Contact Card -->
-                <div class="sidebar-footer">
-                    <div class="status-radar-card">
-                        <div class="radar-top-row">
-                            <div class="radar-ping-wrap">
-                                <span class="radar-dot"></span>
-                                <span class="radar-pulse"></span>
-                            </div>
-                            <span class="radar-status-title">ONLINE • AVAILABLE</span>
-                        </div>
-                        <div class="radar-meta-row">
-                            <span class="radar-tag">RESPONSE TIME</span>
-                            <span class="radar-time">&lt; 24h</span>
-                        </div>
-                        <a href="#contact" class="radar-cta-btn">
-                            <span>START A PROJECT</span>
-                            <svg viewBox="0 0 20 20" width="12" height="12" fill="currentColor">
-                                <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
-
-            </div>
-        </aside>
-
-        <!-- ==============================================
-             MAIN CONTENT AREA
-             ============================================== -->
         <main class="main-content" id="mainContent">
 
             <!-- ==============================================
-                 4. HOME / HERO SECTION
+                 2. TRENDING SCROLL-ANIMATED VIDEO HERO SECTION
                  ============================================== -->
             <section class="section hero-section" id="home">
-                <!-- Dedicated Hero Background Image Layer -->
-                <div class="hero-bg-media" aria-hidden="true">
-                    <img src="assets/images/hero-bg.jpg" alt="" class="hero-bg-img" loading="eager" />
-                    <div class="hero-bg-overlay"></div>
-                </div>
+                <!-- Scroll-Track for 3D Video Perspective Animation -->
+                <div class="hero-scroll-track" id="heroScrollTrack">
+                    <div class="hero-sticky-stage">
 
-                <div class="hero-container">
-                    
-                    <!-- Left Hero Content -->
-                    <div class="hero-text-col reveal-element">
-                        
-                        <div class="hero-badge">
-                            <span class="badge-dot"></span>
-                            <span class="badge-text">SOFTWARE ENGINEER • MOBILE • FULL-STACK</span>
+                        <!-- Full-Bleed Clean Video Background -->
+                        <div class="hero-fullbleed-video-wrap" id="heroVideoStage">
+                            <video id="heroShowcaseVideo" class="hero-fullbleed-video" autoplay muted loop playsinline preload="auto" poster="assets/images/anime-developer-hero.jpg">
+                                <source id="heroVideoSource" src="assets/videos/anime-lofi-coder.mp4" type="video/mp4">
+                            </video>
+                            <!-- Subtle Ambient Sparkles -->
+                            <canvas id="heroAmbientParticles" class="hero-ambient-canvas"></canvas>
+                            <!-- Cinematic Readability Overlay -->
+                            <div class="hero-video-overlay" id="heroVideoOverlay"></div>
                         </div>
 
-                        <h1 class="hero-title">
-                            I BUILD DIGITAL<br>
-                            EXPERIENCES THAT<br>
-                            <span class="text-strawberry-gradient">SOLVE REAL PROBLEMS.</span>
-                        </h1>
-
-                        <p class="hero-description">
-                            I'm <strong class="text-highlight">Daniyal Ahmad Mughal</strong>, a Software Engineering student and developer focused on building modern web and mobile applications. I work across frontend, backend, databases and cross-platform mobile development.
-                        </p>
-
-                        <!-- CTA Actions -->
-                        <div class="hero-actions">
-                            <a href="#projects" class="btn btn-primary">
-                                <span>VIEW MY PROJECTS</span>
-                                <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                </svg>
-                            </a>
-                            <a href="#contact" class="btn btn-secondary">
-                                <span>GET IN TOUCH</span>
-                            </a>
-                        </div>
-
-                        <!-- Availability Indicator -->
-                        <div class="hero-status-row">
-                            <span class="live-indicator"></span>
-                            <span class="live-text">AVAILABLE FOR FREELANCE &amp; DEVELOPMENT PROJECTS</span>
-                        </div>
-
-                        <!-- Tech Stack Badges -->
-                        <div class="hero-tech-badges">
-                            <span class="tech-pill">React Native</span>
-                            <span class="tech-pill">Flutter</span>
-                            <span class="tech-pill">TypeScript</span>
-                            <span class="tech-pill">NestJS</span>
-                            <span class="tech-pill">PostgreSQL</span>
-                            <span class="tech-pill">MongoDB</span>
-                        </div>
-
-                    </div>
-
-                    <!-- Right Hero Visual: Authentic Engineer Terminal -->
-                    <div class="hero-visual-col reveal-element delay-1">
-                        <div class="visual-wrapper" id="heroInteractiveVisual">
+                        <!-- Stage Content: Clean & Centered (No Extra Boxes) -->
+                        <div class="hero-stage-content">
                             
-                            <!-- Developer Terminal -->
-                            <div class="code-terminal-card" id="terminalTilt">
-                                <div class="terminal-header">
-                                    <div class="terminal-dots">
-                                        <span class="dot dot-close"></span>
-                                        <span class="dot dot-minimize"></span>
-                                        <span class="dot dot-expand"></span>
-                                    </div>
-                                    <div class="terminal-title">daniyal@workstation: ~/portfolio</div>
-                                    <div class="terminal-status-tag">ACTIVE</div>
+                            <!-- Main Hero Centerpiece (Centered Clean Text) -->
+                            <div class="hero-header-center" id="heroHeaderBlock">
+                                <div class="hero-badge">
+                                    <span class="badge-dot"></span>
+                                    <span class="badge-text">SOFTWARE ENGINEER • FULL-STACK &amp; MOBILE ARCHITECT</span>
                                 </div>
-                                <div class="terminal-body">
-                                    <div class="term-line"><span class="term-prompt">$</span> <span class="term-keyword">const</span> developer = <span class="term-string">"Daniyal"</span>;</div>
-                                    <div class="term-line"><span class="term-prompt">$</span> <span class="term-keyword">const</span> build = <span class="term-string">"digital products"</span>;</div>
-                                    <div class="term-line"><span class="term-prompt">$</span> <span class="term-command">npm run build</span></div>
-                                    <div class="term-line term-success"><span class="term-check">✓</span> Bundled production modules in 38ms</div>
-                                    <div class="term-pipeline">
-                                        <div class="pipe-node">API</div>
-                                        <div class="pipe-arrow">→</div>
-                                        <div class="pipe-node">DATABASE</div>
-                                        <div class="pipe-arrow">→</div>
-                                        <div class="pipe-node pipe-active">UI</div>
-                                    </div>
-                                    <div class="term-line term-cursor-line">
-                                        <span class="term-prompt">$</span> <span class="typing-text" id="typingHeroCode">Ready to engineer solutions</span><span class="terminal-cursor">_</span>
-                                    </div>
+
+                                <h1 class="hero-title">
+                                    I BUILD DIGITAL EXPERIENCES THAT<br>
+                                    <span class="text-strawberry-gradient">SOLVE REAL PROBLEMS.</span>
+                                </h1>
+
+                                <p class="hero-clean-subtitle">
+                                    Specializing in high-performance web architecture, Flutter &amp; React Native mobile apps, and scalable cloud systems.
+                                </p>
+
+                                <div class="hero-actions">
+                                    <a href="#projects" class="btn btn-primary">
+                                        <span>VIEW MY PROJECTS</span>
+                                        <svg class="btn-arrow" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                        </svg>
+                                    </a>
+                                    <a href="#experience" class="btn btn-secondary">
+                                        <span>EXPLORE EXPERIENCE</span>
+                                    </a>
                                 </div>
                             </div>
 
-                            <!-- Architectural Meta Badges -->
-                            <div class="floating-meta-card badge-top-right">
-                                <div class="meta-icon">
-                                    <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
-                                        <path d="M7 3a1 1 0 000 2h6a1 1 0 100-2H7zM4 7a1 1 0 011-1h10a1 1 0 110 2H5a1 1 0 01-1-1zM2 11a2 2 0 012-2h12a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4z"/>
-                                    </svg>
-                                </div>
-                                <div class="meta-text-block">
-                                    <span class="meta-title">Cross-Platform</span>
-                                    <span class="meta-sub">iOS, Android &amp; Web</span>
-                                </div>
-                            </div>
-
-                            <div class="floating-meta-card badge-bottom-left">
-                                <div class="meta-icon">
-                                    <svg viewBox="0 0 20 20" width="16" height="16" fill="currentColor">
-                                        <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
-                                    </svg>
-                                </div>
-                                <div class="meta-text-block">
-                                    <span class="meta-title">Full-Stack Core</span>
-                                    <span class="meta-sub">Clean Architecture</span>
+                            <!-- Minimalist Scroll Down Cue -->
+                            <div class="hero-scroll-cue" id="heroScrollCue">
+                                <span class="scroll-cue-text">SCROLL TO EXPLORE</span>
+                                <div class="scroll-cue-mouse">
+                                    <span class="scroll-cue-wheel"></span>
                                 </div>
                             </div>
 
                         </div>
-                    </div>
 
+                    </div>
                 </div>
             </section>
 
@@ -917,6 +705,68 @@
                             <p class="section-subtitle-text">
                                 Projects I've built while learning, experimenting and solving real problems.
                             </p>
+                        </div>
+                    </div>
+
+                    <!-- Interactive Cyber Engineering Live Video Deck -->
+                    <div class="cyber-deck-showcase reveal-element">
+                        <div class="cyber-deck-window card-surface">
+                            <div class="cyber-deck-header">
+                                <div class="cyber-deck-header-left">
+                                    <div class="cyber-deck-dots">
+                                        <span class="c-dot red"></span>
+                                        <span class="c-dot yellow"></span>
+                                        <span class="c-dot green"></span>
+                                    </div>
+                                    <div class="cyber-deck-title">
+                                        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                                        <span id="cyberDeckTitleText">pipeline-stream.sh — CI/CD Pipeline &amp; Systems Architecture</span>
+                                    </div>
+                                </div>
+                                <div class="cyber-deck-header-right">
+                                    <!-- Interactive Video Stream Switcher -->
+                                    <div class="cyber-stream-switcher">
+                                        <button class="stream-switch-btn active" data-video-src="assets/videos/scene-4-project.mp4" data-video-title="pipeline-stream.sh — CI/CD Pipeline &amp; Systems Architecture">
+                                            <span class="s-dot"></span> CI/CD BUILD
+                                        </button>
+                                        <button class="stream-switch-btn" data-video-src="assets/videos/scene-2-developer.mp4" data-video-title="workstation.sh — Local Runtime &amp; Kernel Terminal">
+                                            <span class="s-dot"></span> WORKSTATION
+                                        </button>
+                                        <button class="stream-switch-btn" data-video-src="assets/videos/scene-3-team.mp4" data-video-title="architecture-collab.sh — Engineering Team Synergy">
+                                            <span class="s-dot"></span> ARCHITECTURE
+                                        </button>
+                                        <button class="stream-switch-btn" data-video-src="assets/videos/anime-lofi-coder.mp4" data-video-title="anime-lofi-studio.sh — Cyberpunk Creative Lab">
+                                            <span class="s-dot"></span> LOFI LAB
+                                        </button>
+                                    </div>
+                                    <div class="cyber-deck-status">
+                                        <span class="live-pulse-dot"></span>
+                                        <span>LIVE STREAM</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="cyber-deck-viewport">
+                                <video id="cyberDeckVideo" class="cyber-deck-video" autoplay muted loop playsinline preload="auto">
+                                    <source id="cyberDeckSource" src="assets/videos/scene-4-project.mp4" type="video/mp4">
+                                </video>
+                                <div class="cyber-deck-hud-overlay">
+                                    <div class="hud-top-metrics">
+                                        <span class="hud-pill"><span class="hud-icon">⚡</span> 0 RUNTIME CRASHES</span>
+                                        <span class="hud-pill"><span class="hud-icon">🌐</span> EDGE CACHE: 14ms</span>
+                                        <span class="hud-pill"><span class="hud-icon">🛡️</span> SECURITY AUDIT: A+</span>
+                                    </div>
+                                    <div class="hud-bottom-telemetry">
+                                        <div class="hud-telemetry-text">
+                                            <span class="hud-term-prompt">&gt; git deploy:production --verify-signatures</span>
+                                            <p class="hud-sub">End-to-end multi-platform applications architected for stability &amp; velocity</p>
+                                        </div>
+                                        <div class="hud-badges-cluster">
+                                            <span class="hud-video-badge">4K ULTRA-HD</span>
+                                            <span class="hud-fps-badge">60 FPS STREAM</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1881,6 +1731,6 @@
     </div>
 
     <!-- Script -->
-    <script src="script.js?v=3.2"></script>
+    <script src="script.js?v=6.1"></script>
 </body>
 </html>
