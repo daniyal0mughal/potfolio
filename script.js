@@ -414,53 +414,83 @@ document.addEventListener('DOMContentLoaded', () => {
         heroVideoEl.addEventListener('canplaythrough', () => playHeroVideo(), { passive: true });
 
         // --------------------------------------------------------------------------
-        // INFINITE GAPLESS LOOP ENGINE (PREVENTS STOPPING AT VIDEO END)
+        // INFINITE GAPLESS LOOP ENGINE & ACTIVE STALL RECOVERY WATCHDOG
         // --------------------------------------------------------------------------
+        let isLoopRewinding = false;
+
+        const triggerSeamlessLoop = () => {
+            if (!heroVideoEl || userManuallyPausedVideo || isLoopRewinding) return;
+            isLoopRewinding = true;
+            heroVideoEl.currentTime = 0;
+            const playPromise = heroVideoEl.play();
+            if (playPromise !== undefined) {
+                playPromise.catch(() => {});
+            }
+            updateVideoPillState(true);
+            setTimeout(() => {
+                isLoopRewinding = false;
+            }, 350);
+        };
+
         // 1. Pre-EOF loop rewind: seamlessly rewinds before browser decoder pauses/halts at EOF
         heroVideoEl.addEventListener('timeupdate', () => {
             if (!userManuallyPausedVideo && heroVideoEl.duration) {
-                // If approaching the final 0.15s of the clip, loop back to the start smoothly
-                if (heroVideoEl.currentTime >= heroVideoEl.duration - 0.15) {
-                    heroVideoEl.currentTime = 0;
-                    if (heroVideoEl.paused) {
-                        heroVideoEl.play().catch(() => {});
-                    }
+                // If approaching the final 0.35s of the clip, trigger the seamless loop
+                if (heroVideoEl.currentTime >= heroVideoEl.duration - 0.35) {
+                    triggerSeamlessLoop();
                 }
             }
         }, { passive: true });
 
         // 2. 'ended' event fallback: if EOF is reached, immediately restart
         heroVideoEl.addEventListener('ended', () => {
-            if (!userManuallyPausedVideo) {
-                heroVideoEl.currentTime = 0;
-                heroVideoEl.play().catch(() => {});
-                updateVideoPillState(true);
-            }
+            triggerSeamlessLoop();
         }, { passive: true });
 
-        // 3. 'pause' event watchdog: automatically recovers if paused at EOF or during loop transition
-        heroVideoEl.addEventListener('pause', () => {
-            if (!userManuallyPausedVideo) {
-                // If paused near the end or at EOF, restart immediately
-                if (!heroVideoEl.duration || heroVideoEl.currentTime >= (heroVideoEl.duration - 0.35) || heroVideoEl.ended) {
-                    heroVideoEl.currentTime = 0;
-                    heroVideoEl.play().catch(() => {});
-                } else {
-                    // Check if it's a genuine pause or a browser stutter
-                    setTimeout(() => {
-                        if (heroVideoEl.paused && !userManuallyPausedVideo) {
-                            heroVideoEl.play().catch(() => {
-                                updateVideoPillState(false);
-                            });
-                        }
-                    }, 120);
+        // 3. Active 200ms Heartbeat Watchdog:
+        // Solves the Chromium issue where videos without audio tracks silently halt at currentTime == duration
+        // without firing 'ended', 'pause', or 'timeupdate'.
+        let lastObservedTime = -1;
+        let stallTicks = 0;
+        setInterval(() => {
+            if (!heroVideoEl || userManuallyPausedVideo || isLoopRewinding) return;
+
+            // If the video is supposed to be playing but its time hasn't changed for ~400ms:
+            if (heroVideoEl.currentTime === lastObservedTime && heroVideoEl.currentTime > 0 && !heroVideoEl.paused) {
+                stallTicks++;
+                if (stallTicks >= 2) {
+                    triggerSeamlessLoop();
+                    stallTicks = 0;
                 }
+            } else {
+                lastObservedTime = heroVideoEl.currentTime;
+                stallTicks = 0;
             }
-        }, { passive: true });
 
-        // Synchronize UI status pill
+            // Safety check: if at or past duration - 0.25s
+            if (heroVideoEl.duration && heroVideoEl.currentTime >= heroVideoEl.duration - 0.25) {
+                triggerSeamlessLoop();
+            }
+        }, 200);
+
+        // 4. Synchronize UI status pill
         heroVideoEl.addEventListener('playing', () => {
             updateVideoPillState(true);
+        }, { passive: true });
+
+        heroVideoEl.addEventListener('pause', () => {
+            if (!userManuallyPausedVideo && !isLoopRewinding) {
+                // If paused near the end of video, restart immediately
+                if (!heroVideoEl.duration || heroVideoEl.currentTime >= (heroVideoEl.duration - 0.4) || heroVideoEl.ended) {
+                    triggerSeamlessLoop();
+                } else {
+                    setTimeout(() => {
+                        if (heroVideoEl.paused && !userManuallyPausedVideo && !isLoopRewinding) {
+                            updateVideoPillState(false);
+                        }
+                    }, 200);
+                }
+            }
         }, { passive: true });
 
         // Fallback to scene-2-developer if primary video decoding encounters an error
