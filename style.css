@@ -1160,6 +1160,93 @@ body.hero-animated .hero-anim-cue {
     100% { transform: translateY(8px); opacity: 0; }
 }
 
+/* Live Video Status & Toggle Pill */
+.hero-video-status-pill {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 2rem;
+    z-index: 10;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.95rem;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(203, 213, 225, 0.95);
+    border-radius: 9999px;
+    box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    color: #334155;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    user-select: none;
+}
+
+.hero-video-status-pill:hover {
+    background: #FFFFFF;
+    border-color: #0284C7;
+    color: #0F172A;
+    box-shadow: 0 8px 24px rgba(2, 132, 199, 0.18);
+    transform: translateY(-2px);
+}
+
+.video-pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10B981;
+    box-shadow: 0 0 10px #10B981;
+    animation: pulseDot 2s infinite ease-in-out;
+}
+
+.hero-video-status-pill.is-paused .video-pulse-dot {
+    background: #E11D48;
+    box-shadow: 0 0 10px #E11D48;
+    animation: none;
+}
+
+.hero-video-status-pill .icon-pause {
+    display: inline-block;
+    color: #64748B;
+}
+
+.hero-video-status-pill .icon-play {
+    display: none;
+    color: #E11D48;
+}
+
+.hero-video-status-pill.is-paused .icon-pause {
+    display: none;
+}
+
+.hero-video-status-pill.is-paused .icon-play {
+    display: inline-block;
+}
+
+@keyframes pulseDot {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.35);
+        opacity: 0.5;
+    }
+}
+
+@media (max-width: 768px) {
+    .hero-video-status-pill {
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.35rem 0.75rem;
+        font-size: 0.62rem;
+    }
+}
+
 /* ==========================================================================
    6. ABOUT SECTION
    ========================================================================== */

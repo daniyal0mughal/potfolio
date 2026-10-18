@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     <!-- Stylesheet -->
-    <link rel="stylesheet" href="style.css?v=7.1">
+    <link rel="stylesheet" href="style.css?v=7.2">
 </head>
 <body class="light-theme is-loading">
 
@@ -161,8 +161,9 @@
 
                         <!-- Full-Bleed Clean Video Background -->
                         <div class="hero-fullbleed-video-wrap" id="heroVideoStage">
-                            <video id="heroShowcaseVideo" class="hero-fullbleed-video" autoplay muted loop playsinline preload="auto" poster="assets/images/anime-developer-hero.jpg">
+                            <video id="heroShowcaseVideo" class="hero-fullbleed-video" autoplay muted="muted" loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback src="assets/videos/anime-lofi-coder.mp4" poster="assets/images/anime-developer-hero.jpg">
                                 <source id="heroVideoSource" src="assets/videos/anime-lofi-coder.mp4" type="video/mp4">
+                                <source src="assets/videos/scene-2-developer.mp4" type="video/mp4">
                             </video>
                             <!-- Subtle Ambient Sparkles -->
                             <canvas id="heroAmbientParticles" class="hero-ambient-canvas"></canvas>
@@ -176,8 +177,8 @@
                             <!-- Main Hero Centerpiece (Centered Clean Text with Kinetic Animation) -->
                             <div class="hero-header-center" id="heroHeaderBlock">
                                 <div class="hero-badge hero-anim-badge">
-                                    <span class="badge-dot"></span>
-                                    <span class="badge-text">SOFTWARE ENGINEER • FULL-STACK &amp; MOBILE ARCHITECT</span>
+                                     <span class="badge-dot"></span>
+                                     <span class="badge-text">SOFTWARE ENGINEER • FULL-STACK &amp; MOBILE ARCHITECT</span>
                                 </div>
 
                                 <h1 class="hero-title">
@@ -209,6 +210,18 @@
                                     <span class="scroll-cue-wheel"></span>
                                 </div>
                             </div>
+
+                            <!-- Live Video Status & Play/Pause Pill -->
+                            <button class="hero-video-status-pill hero-anim-cue" id="heroVideoStatusPill" aria-label="Toggle background video playback" title="Click to play / pause video">
+                                <span class="video-pulse-dot" id="videoPulseDot"></span>
+                                <span class="video-status-text" id="videoStatusText">VIDEO PLAYING</span>
+                                <svg class="video-status-icon icon-pause" viewBox="0 0 20 20" fill="currentColor" width="13" height="13">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                                <svg class="video-status-icon icon-play" viewBox="0 0 20 20" fill="currentColor" width="13" height="13">
+                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
 
                         </div>
 
@@ -1669,6 +1682,6 @@
     </div>
 
     <!-- Script -->
-    <script src="script.js?v=7.1"></script>
+    <script src="script.js?v=7.2"></script>
 </body>
 </html>

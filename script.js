@@ -20,6 +20,47 @@ document.addEventListener('DOMContentLoaded', () => {
     'use strict';
 
     // --------------------------------------------------------------------------
+    // HERO VIDEO CONTROLLER (GLOBAL SCOPE FOR PRELOADER & USER GESTURE TRIGGERS)
+    // --------------------------------------------------------------------------
+    const heroVideoEl = document.getElementById('heroShowcaseVideo');
+    const heroVideoStatusPill = document.getElementById('heroVideoStatusPill');
+    const videoStatusText = document.getElementById('videoStatusText');
+
+    let userManuallyPausedVideo = false;
+
+    const updateVideoPillState = (isPlaying) => {
+        if (!heroVideoStatusPill) return;
+        if (isPlaying) {
+            heroVideoStatusPill.classList.remove('is-paused');
+            if (videoStatusText) videoStatusText.textContent = 'VIDEO PLAYING';
+        } else {
+            heroVideoStatusPill.classList.add('is-paused');
+            if (videoStatusText) videoStatusText.textContent = 'PLAY VIDEO';
+        }
+    };
+
+    const playHeroVideo = () => {
+        if (!heroVideoEl || userManuallyPausedVideo) return;
+        heroVideoEl.muted = true;
+        heroVideoEl.defaultMuted = true;
+        heroVideoEl.volume = 0;
+        heroVideoEl.setAttribute('muted', '');
+        heroVideoEl.setAttribute('playsinline', '');
+        heroVideoEl.setAttribute('webkit-playsinline', '');
+
+        const playPromise = heroVideoEl.play();
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    updateVideoPillState(true);
+                })
+                .catch(() => {
+                    updateVideoPillState(false);
+                });
+        }
+    };
+
+    // --------------------------------------------------------------------------
     // 0. FULL-SCREEN DEVELOPER PRELOADER
     // --------------------------------------------------------------------------
     const preloader = document.getElementById('preloader');
@@ -61,6 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 preloader.classList.add('preloader-hidden');
                 document.body.classList.remove('is-loading');
                 document.body.classList.add('hero-animated');
+
+                // Trigger video playback upon preloader dismissal
+                playHeroVideo();
 
                 setTimeout(() => {
                     if (preloader && preloader.parentNode) {
@@ -313,7 +357,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const heroVideoStage = document.getElementById('heroVideoStage');
     const heroVideoOverlay = document.getElementById('heroVideoOverlay');
     const heroScrollCue = document.getElementById('heroScrollCue');
-    const heroVideoEl = document.getElementById('heroShowcaseVideo');
     const ambientCanvas = document.getElementById('heroAmbientParticles');
 
     let heroScrollProgress = 0;
@@ -348,10 +391,101 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', computeHeroScroll, { passive: true });
     computeHeroScroll();
 
-    // Ensure clean video playback
+    // --------------------------------------------------------------------------
+    // BULLETPROOF HERO VIDEO ENGINE & EVENT LISTENERS
+    // --------------------------------------------------------------------------
     if (heroVideoEl) {
+        // Enforce muted and playsinline for strict autoplay compatibility
         heroVideoEl.muted = true;
-        heroVideoEl.play().catch(() => {});
+        heroVideoEl.defaultMuted = true;
+        heroVideoEl.volume = 0;
+
+        // Try playing immediately
+        playHeroVideo();
+
+        // Listen for media readiness events
+        heroVideoEl.addEventListener('loadeddata', () => playHeroVideo(), { passive: true });
+        heroVideoEl.addEventListener('canplay', () => playHeroVideo(), { passive: true });
+        heroVideoEl.addEventListener('canplaythrough', () => playHeroVideo(), { passive: true });
+
+        // Synchronize UI status pill
+        heroVideoEl.addEventListener('playing', () => {
+            updateVideoPillState(true);
+        }, { passive: true });
+
+        heroVideoEl.addEventListener('pause', () => {
+            if (!userManuallyPausedVideo) {
+                updateVideoPillState(false);
+            }
+        }, { passive: true });
+
+        // Fallback to scene-2-developer if primary video decoding encounters an error
+        heroVideoEl.addEventListener('error', () => {
+            console.warn('Hero video load/decode notice, switching to fallback stream.');
+            const fallback = 'assets/videos/scene-2-developer.mp4';
+            if (!heroVideoEl.currentSrc.includes('scene-2-developer')) {
+                heroVideoEl.src = fallback;
+                heroVideoEl.load();
+                playHeroVideo();
+            }
+        });
+
+        // Interactive status pill toggle
+        if (heroVideoStatusPill) {
+            heroVideoStatusPill.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (heroVideoEl.paused) {
+                    userManuallyPausedVideo = false;
+                    playHeroVideo();
+                } else {
+                    userManuallyPausedVideo = true;
+                    heroVideoEl.pause();
+                    updateVideoPillState(false);
+                }
+            });
+        }
+
+        // Global Wakeup: On the very first user interaction anywhere (click, touch, scroll, pointer, key)
+        const wakeVideoOnUserGesture = () => {
+            if (heroVideoEl.paused && !userManuallyPausedVideo) {
+                playHeroVideo();
+            }
+            if (!heroVideoEl.paused) {
+                ['click', 'touchstart', 'scroll', 'pointerdown', 'keydown'].forEach(evt => {
+                    window.removeEventListener(evt, wakeVideoOnUserGesture);
+                });
+            }
+        };
+
+        ['click', 'touchstart', 'scroll', 'pointerdown', 'keydown'].forEach(evt => {
+            window.addEventListener(evt, wakeVideoOnUserGesture, { passive: true });
+        });
+
+        // Tab Visibility: resume video playback when user switches back to this tab
+        document.addEventListener('visibilitychange', () => {
+            if (!document.hidden && heroVideoEl.paused && !userManuallyPausedVideo) {
+                playHeroVideo();
+            }
+        });
+
+        // Viewport Intersection: pause off-screen to conserve GPU resources, resume when hero enters view
+        if ('IntersectionObserver' in window && heroScrollTrack) {
+            const heroVideoObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        if (heroVideoEl.paused && !userManuallyPausedVideo) {
+                            playHeroVideo();
+                        }
+                    } else {
+                        if (!heroVideoEl.paused) {
+                            heroVideoEl.pause();
+                        }
+                    }
+                });
+            }, { threshold: 0.05 });
+            heroVideoObserver.observe(heroScrollTrack);
+        }
     }
 
     // Ambient Background Particles
