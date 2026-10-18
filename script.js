@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 preloader.classList.add('preloader-hidden');
                 document.body.classList.remove('is-loading');
+                document.body.classList.add('hero-animated');
 
                 setTimeout(() => {
                     if (preloader && preloader.parentNode) {
@@ -86,6 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             setTimeout(dismissPreloader, 1000);
         }
+    } else {
+        document.body.classList.add('hero-animated');
     }
 
     // --------------------------------------------------------------------------

@@ -971,6 +971,134 @@ h1, h2, h3, h4, h5, h6 {
     text-shadow: 0 2px 16px rgba(255, 255, 255, 0.9), 0 1px 3px rgba(255, 255, 255, 0.8);
 }
 
+.hero-title-line {
+    display: block;
+}
+
+/* --------------------------------------------------------------------------
+   HERO TEXT KINETIC ENTRANCE ANIMATIONS
+   -------------------------------------------------------------------------- */
+.hero-anim-badge {
+    opacity: 0;
+    transform: translateY(-22px) scale(0.94);
+    filter: blur(6px);
+}
+
+.hero-anim-1,
+.hero-anim-2 {
+    opacity: 0;
+    transform: translateY(42px);
+    filter: blur(10px);
+}
+
+.hero-anim-sub {
+    opacity: 0;
+    transform: translateY(28px);
+    filter: blur(6px);
+}
+
+.hero-anim-actions {
+    opacity: 0;
+    transform: translateY(24px) scale(0.96);
+}
+
+.hero-anim-cue {
+    opacity: 0;
+    transform: translateY(16px);
+}
+
+/* Staggered triggers */
+body:not(.is-loading) .hero-anim-badge,
+body.hero-animated .hero-anim-badge {
+    animation: heroRevealBadge 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+}
+
+body:not(.is-loading) .hero-anim-1,
+body.hero-animated .hero-anim-1 {
+    animation: heroRevealTitle 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.28s forwards;
+}
+
+body:not(.is-loading) .hero-anim-2,
+body.hero-animated .hero-anim-2 {
+    animation: heroRevealTitle 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.44s forwards;
+}
+
+body:not(.is-loading) .hero-anim-sub,
+body.hero-animated .hero-anim-sub {
+    animation: heroRevealSub 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.62s forwards;
+}
+
+body:not(.is-loading) .hero-anim-actions,
+body.hero-animated .hero-anim-actions {
+    animation: heroRevealActions 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+}
+
+body:not(.is-loading) .hero-anim-cue,
+body.hero-animated .hero-anim-cue {
+    animation: heroRevealCue 0.85s cubic-bezier(0.16, 1, 0.3, 1) 1.05s forwards;
+}
+
+@keyframes heroRevealBadge {
+    0% {
+        opacity: 0;
+        transform: translateY(-22px) scale(0.94);
+        filter: blur(6px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+    }
+}
+
+@keyframes heroRevealTitle {
+    0% {
+        opacity: 0;
+        transform: translateY(42px);
+        filter: blur(10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes heroRevealSub {
+    0% {
+        opacity: 0;
+        transform: translateY(28px);
+        filter: blur(6px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes heroRevealActions {
+    0% {
+        opacity: 0;
+        transform: translateY(24px) scale(0.96);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes heroRevealCue {
+    0% {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    100% {
+        opacity: 0.85;
+        transform: translateY(0);
+    }
+}
+
 .hero-clean-subtitle {
     font-size: clamp(1rem, 1.8vw, 1.2rem);
     color: #334155;
