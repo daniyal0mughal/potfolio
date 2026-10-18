@@ -938,6 +938,30 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-backdrop-filter: blur(14px);
 }
 
+/* Side Role Badge Positioned to the Side */
+.hero-side-badge {
+    position: absolute;
+    top: clamp(5.4rem, 9.5vh, 7rem);
+    left: clamp(1.2rem, 3.8vw, 3.5rem);
+    z-index: 10;
+    margin-bottom: 0;
+    will-change: transform, opacity;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+@media (max-width: 768px) {
+    .hero-side-badge {
+        top: 5.2rem;
+        left: 1rem;
+        padding: 0.32rem 0.75rem;
+        max-width: calc(100vw - 2rem);
+    }
+    .hero-side-badge .badge-text {
+        font-size: 0.62rem;
+        letter-spacing: 0.05em;
+    }
+}
+
 .badge-dot {
     width: 7px;
     height: 7px;

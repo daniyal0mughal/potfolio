@@ -356,6 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --------------------------------------------------------------------------
     const heroScrollTrack = document.getElementById('heroScrollTrack');
     const heroHeaderBlock = document.getElementById('heroHeaderBlock');
+    const heroSideBadge = document.getElementById('heroSideBadge');
     const heroVideoStage = document.getElementById('heroVideoStage');
     const heroVideoOverlay = document.getElementById('heroVideoOverlay');
     const heroScrollCue = document.getElementById('heroScrollCue');
@@ -582,6 +583,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const headerOpacity = Math.max(1 - p * 1.5, 0);
             heroHeaderBlock.style.transform = `translateY(${headerY.toFixed(1)}px)`;
             heroHeaderBlock.style.opacity = headerOpacity.toFixed(2);
+        }
+
+        if (heroSideBadge) {
+            // Side badge glides up and dissolves smoothly on scroll
+            const badgeY = -p * 60;
+            const badgeOpacity = Math.max(1 - p * 2.2, 0);
+            heroSideBadge.style.transform = `translateY(${badgeY.toFixed(1)}px)`;
+            heroSideBadge.style.opacity = badgeOpacity.toFixed(2);
         }
 
         if (heroScrollCue) {
