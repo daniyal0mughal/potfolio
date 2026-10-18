@@ -303,47 +303,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --------------------------------------------------------------------------
-    // 6B. CYBER ENGINEERING LIVE VIDEO DECK (PROJECTS SHOWREEL)
-    // --------------------------------------------------------------------------
-    const cyberDeckVideo = document.getElementById('cyberDeckVideo');
-    const cyberDeckSource = document.getElementById('cyberDeckSource');
-    const cyberDeckTitleText = document.getElementById('cyberDeckTitleText');
-    const streamSwitchBtns = document.querySelectorAll('.stream-switch-btn');
-
-    if (cyberDeckVideo) {
-        cyberDeckVideo.muted = true;
-        cyberDeckVideo.play().catch(() => {});
-
-        streamSwitchBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const targetSrc = btn.getAttribute('data-video-src');
-                const targetTitle = btn.getAttribute('data-video-title');
-
-                if (!targetSrc) return;
-
-                streamSwitchBtns.forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-
-                // Smooth fade transition
-                cyberDeckVideo.style.opacity = '0.3';
-                setTimeout(() => {
-                    if (cyberDeckSource) {
-                        cyberDeckSource.src = targetSrc;
-                    }
-                    cyberDeckVideo.src = targetSrc;
-                    cyberDeckVideo.load();
-                    cyberDeckVideo.play().catch(() => {});
-                    cyberDeckVideo.style.opacity = '1';
-
-                    if (cyberDeckTitleText && targetTitle) {
-                        cyberDeckTitleText.textContent = targetTitle;
-                    }
-                }, 180);
-            });
-        });
-    }
-
-    // --------------------------------------------------------------------------
     // 7. CLEAN FULL-SCREEN VIDEO HERO ENGINE WITH SCROLL ANIMATION
     // --------------------------------------------------------------------------
     const heroScrollTrack = document.getElementById('heroScrollTrack');
