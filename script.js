@@ -44,9 +44,11 @@ document.addEventListener('DOMContentLoaded', () => {
         heroVideoEl.muted = true;
         heroVideoEl.defaultMuted = true;
         heroVideoEl.volume = 0;
+        heroVideoEl.loop = true;
         heroVideoEl.setAttribute('muted', '');
         heroVideoEl.setAttribute('playsinline', '');
         heroVideoEl.setAttribute('webkit-playsinline', '');
+        heroVideoEl.setAttribute('loop', '');
 
         const playPromise = heroVideoEl.play();
         if (playPromise !== undefined) {
@@ -395,10 +397,12 @@ document.addEventListener('DOMContentLoaded', () => {
     // BULLETPROOF HERO VIDEO ENGINE & EVENT LISTENERS
     // --------------------------------------------------------------------------
     if (heroVideoEl) {
-        // Enforce muted and playsinline for strict autoplay compatibility
+        // Enforce muted, playsinline, and loop for strict continuous playback
         heroVideoEl.muted = true;
         heroVideoEl.defaultMuted = true;
         heroVideoEl.volume = 0;
+        heroVideoEl.loop = true;
+        heroVideoEl.setAttribute('loop', '');
 
         // Try playing immediately
         playHeroVideo();
@@ -408,15 +412,54 @@ document.addEventListener('DOMContentLoaded', () => {
         heroVideoEl.addEventListener('canplay', () => playHeroVideo(), { passive: true });
         heroVideoEl.addEventListener('canplaythrough', () => playHeroVideo(), { passive: true });
 
+        // --------------------------------------------------------------------------
+        // INFINITE GAPLESS LOOP ENGINE (PREVENTS STOPPING AT VIDEO END)
+        // --------------------------------------------------------------------------
+        // 1. Pre-EOF loop rewind: seamlessly rewinds before browser decoder pauses/halts at EOF
+        heroVideoEl.addEventListener('timeupdate', () => {
+            if (!userManuallyPausedVideo && heroVideoEl.duration) {
+                // If approaching the final 0.15s of the clip, loop back to the start smoothly
+                if (heroVideoEl.currentTime >= heroVideoEl.duration - 0.15) {
+                    heroVideoEl.currentTime = 0;
+                    if (heroVideoEl.paused) {
+                        heroVideoEl.play().catch(() => {});
+                    }
+                }
+            }
+        }, { passive: true });
+
+        // 2. 'ended' event fallback: if EOF is reached, immediately restart
+        heroVideoEl.addEventListener('ended', () => {
+            if (!userManuallyPausedVideo) {
+                heroVideoEl.currentTime = 0;
+                heroVideoEl.play().catch(() => {});
+                updateVideoPillState(true);
+            }
+        }, { passive: true });
+
+        // 3. 'pause' event watchdog: automatically recovers if paused at EOF or during loop transition
+        heroVideoEl.addEventListener('pause', () => {
+            if (!userManuallyPausedVideo) {
+                // If paused near the end or at EOF, restart immediately
+                if (!heroVideoEl.duration || heroVideoEl.currentTime >= (heroVideoEl.duration - 0.35) || heroVideoEl.ended) {
+                    heroVideoEl.currentTime = 0;
+                    heroVideoEl.play().catch(() => {});
+                } else {
+                    // Check if it's a genuine pause or a browser stutter
+                    setTimeout(() => {
+                        if (heroVideoEl.paused && !userManuallyPausedVideo) {
+                            heroVideoEl.play().catch(() => {
+                                updateVideoPillState(false);
+                            });
+                        }
+                    }, 120);
+                }
+            }
+        }, { passive: true });
+
         // Synchronize UI status pill
         heroVideoEl.addEventListener('playing', () => {
             updateVideoPillState(true);
-        }, { passive: true });
-
-        heroVideoEl.addEventListener('pause', () => {
-            if (!userManuallyPausedVideo) {
-                updateVideoPillState(false);
-            }
         }, { passive: true });
 
         // Fallback to scene-2-developer if primary video decoding encounters an error
@@ -469,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
 
-        // Viewport Intersection: pause off-screen to conserve GPU resources, resume when hero enters view
+        // Viewport Intersection: only pause when scrolled completely past the hero section
         if ('IntersectionObserver' in window && heroScrollTrack) {
             const heroVideoObserver = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -477,13 +520,14 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (heroVideoEl.paused && !userManuallyPausedVideo) {
                             playHeroVideo();
                         }
-                    } else {
-                        if (!heroVideoEl.paused) {
+                    } else if (entry.boundingClientRect.bottom < 0) {
+                        // User has scrolled completely below the hero section
+                        if (!heroVideoEl.paused && !userManuallyPausedVideo) {
                             heroVideoEl.pause();
                         }
                     }
                 });
-            }, { threshold: 0.05 });
+            }, { threshold: 0.01 });
             heroVideoObserver.observe(heroScrollTrack);
         }
     }
